@@ -77,7 +77,7 @@
       .no-print{display:none !important}
     }
     /* Risk-lab shell: masthead, gutters, headings, carded notes. Shared with the other tools. */
-    :root{--ink-2:#4d4548;--muted:#7a7073;--soft-line:rgba(58,51,54,.08)}
+    :root{--ink-2:#4d4548;--muted:#7a7073;--soft-line:rgba(58,51,54,.08);--sage:#4c7359}
     .wrap{max-width:1400px;margin:0 auto;padding:0 24px}
     @media (max-width:767px){.wrap{padding:0 16px}}
     .masthead{padding-top:48px;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid var(--soft-line)}
@@ -95,6 +95,21 @@
     .note p{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-2);line-height:1.65}
     .note p+p{margin-top:8px}
     .notes.embedded{padding-top:6px}
+    .guide{padding:4px 0 28px}
+    .guide h2{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:28px 0 12px;padding-bottom:10px;border-bottom:1px solid var(--soft-line)}
+    .guide h2:first-of-type{margin-top:0}
+    .guide-toc{display:flex;flex-wrap:wrap;gap:.35rem .9rem;margin:0 0 18px;font-size:13px;font-family:'Inter',sans-serif}
+    .guide-toc a{color:var(--accent)}
+    .guide-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:699px){.guide-pair{grid-template-columns:1fr}}
+    .guide-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 26px rgba(58,51,54,.07);padding:16px 18px}
+    .guide-box.use{border-left:3px solid var(--sage)}
+    .guide-box.dont{border-left:3px solid var(--accent)}
+    .guide-box h3{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:18px;margin:0 0 8px;letter-spacing:-.01em;color:var(--ink)}
+    .guide-box ul,.guide ol{margin:0;padding-left:1.15rem}
+    .guide li{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-2);line-height:1.65;margin:.4rem 0}
+    .guide li b{color:var(--ink);font-weight:600}
+    .guide-close{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-2);line-height:1.65;margin:10px 0 0}
     .colophon{margin-top:28px;padding:20px 0 64px;border-top:1px solid var(--line);font-family:'Inter',sans-serif;font-size:12px;line-height:1.65;color:var(--muted)}
   </style>
 </head>
@@ -358,6 +373,38 @@
                 p.limitations?h('div',{style:{fontSize:11,marginTop:2}},p.limitations):null))))));
   }
 
+  function Guide(){
+    return h('section',{className:"guide","aria-label":"How to use this"},
+      h('nav',{className:"guide-toc","aria-label":"On this page"},
+        h('a',{href:"#when"},"When to use it"),
+        h('a',{href:"#how"},"How to use it"),
+        h('a',{href:"#org"},"Take it into your org")),
+      h('h2',{id:"when"},"When and where to use it"),
+      h('div',{className:"guide-pair"},
+        h('div',{className:"guide-box use"},h('h3',null,"Use it when"),
+          h('ul',null,
+            h('li',null,"You have an incident and need to separate discovery from determination. The four business days run from determination."),
+            h('li',null,"You need both legs of the analysis — a quantitative screen and the SAB No. 99 qualitative mix — on one contemporaneous record."),
+            h('li',null,"You are training a GRC, legal, or incident-response team on Item 1.05, and a score would teach the wrong lesson."))),
+        h('div',{className:"guide-box dont"},h('h3',null,"Do not use it when"),
+          h('ul',null,
+            h('li',null,"You need a filing decision. This is an analysis aid, not legal advice, and it does not substitute for securities counsel."),
+            h('li',null,"The default 5% of pre-tax income and 0.5% of revenue are being treated as the law. They are configurable screens, not thresholds in the rule."),
+            h('li',null,"The memo is being written after the fact and called contemporaneous. Reconstruction is a different artefact.")))),
+      h('h2',{id:"how"},"How to use it"),
+      h('ol',null,
+        h('li',null,h('b',null,"Date it. "),"Discovery and determination are different dates. The workbench computes the gap and flags a long one, because that gap is independently reviewable."),
+        h('li',null,h('b',null,"Run both legs. "),"Four loss components sum to an expected exposure; a multiplier produces the reasonably likely downside. Both sit against the screens, then against nine qualitative factors for the total mix."),
+        h('li',null,h('b',null,"Write it down. "),"A plain-text memorandum records the inputs, both legs, the conclusion and its basis, and a filing deadline that excludes weekends and observed US federal holidays. An override is recorded as a filer judgment.")),
+      h('h2',{id:"org"},"Take it into your organisation"),
+      h('ol',null,
+        h('li',null,h('b',null,"Date discovery and determination as they happen. "),"The gap is independently reviewable. Do not reconstruct it."),
+        h('li',null,h('b',null,"Keep the quantitative and qualitative legs visibly separate, "),"so a reviewer can see which one carried the call and test that leg specifically."),
+        h('li',null,h('b',null,"Write the memo at the time. "),"If you overrule the screen, record the override as a filer judgment, not as a missing step."),
+        h('li',null,h('b',null,"Send it to securities counsel. "),"This page does not file Form 8-K. A not-material determination today does not settle Item 106, or a later change in facts. Put a review trigger on the incident.")),
+      h('p',{className:"guide-close"},"The notes below are the honest limits. The output that matters is the record, not the verdict."));
+  }
+
   function App(){
     const mb=useIsMobile();
 
@@ -551,6 +598,7 @@
           ": would a reasonable investor consider it important, given the total mix of information? SAB No. 99 then makes the harder point — a quantitatively small number can still be material once qualitative factors are weighed. You cannot compute your way out of the judgment."),
         h('p',{className:"deck"},
           "So this tool does not return a score. It works both legs of the analysis, shows you which one is carrying the conclusion, and drafts the contemporaneous memo that is the thing you will actually be asked for later.")),
+      !EMBEDDED&&h(Guide),
 
       /* ---------------- THE TOOL ---------------- */
       h('div',{style:Object.assign({},cardStyle(pd),{marginBottom:18})},

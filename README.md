@@ -4,7 +4,7 @@ Work a cybersecurity incident through an SEC **Item 1.05** materiality determina
 the analysis, the four-business-day clock, and the contemporaneous memo that is the thing you will
 actually be asked for later.
 
-**Live:** https://rootcawsllc.github.io/cyber-materiality-workbench/
+**Live:** https://rootcawsllc.github.io/cyber-materiality-workbench/ — when to use it, how to use it, and how to take the pattern into an organisation.
 
 ![The workbench on the risk-lab shell. A full-width introduction under the lab kicker, then four panels with Fraunces headings: the incident and its two dates, the quantitative screen showing an $11M expected loss and $28M reasonably likely downside against the 5% pre-tax screen, the nine qualitative factors with their ratings, and the contemporaneous memo. Between them, a Material determination banner with the override controls; beneath, three closing notes in cards](preview.png)
 
