@@ -76,6 +76,26 @@
       body{background:#fff}
       .no-print{display:none !important}
     }
+    /* Risk-lab shell: masthead, gutters, headings, carded notes. Shared with the other tools. */
+    :root{--ink-2:#4d4548;--muted:#7a7073;--soft-line:rgba(58,51,54,.08)}
+    .wrap{max-width:1400px;margin:0 auto;padding:0 24px}
+    @media (max-width:767px){.wrap{padding:0 16px}}
+    .masthead{padding-top:48px;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid var(--soft-line)}
+    .kicker{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+    .masthead h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(34px,4.6vw,56px);line-height:1.02;letter-spacing:-.02em;margin:10px 0 14px;color:var(--ink)}
+    .masthead h1 em{font-style:italic;color:var(--accent)}
+    .deck{font-family:'Inter',sans-serif;font-size:17px;color:var(--ink-2);line-height:1.6;margin-bottom:12px}
+    .deck:last-child{margin-bottom:0}
+    .panel-h{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:20px;letter-spacing:-.01em;color:var(--ink);margin-bottom:8px}
+    .notes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-top:20px;padding-bottom:8px}
+    .notes::before{content:"Notes";grid-column:1/-1;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--soft-line)}
+    .note{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 26px rgba(58,51,54,.07);padding:18px 20px}
+    @media (max-width:899px){.notes{grid-template-columns:1fr}}
+    .note h3{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:19px;margin-bottom:8px;letter-spacing:-.01em;color:var(--ink)}
+    .note p{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-2);line-height:1.65}
+    .note p+p{margin-top:8px}
+    .notes.embedded{padding-top:6px}
+    .colophon{margin-top:28px;padding:20px 0 64px;border-top:1px solid var(--line);font-family:'Inter',sans-serif;font-size:12px;line-height:1.65;color:var(--muted)}
   </style>
 </head>
 <body>
@@ -514,32 +534,27 @@
 
     const pd=mb?16:24;
     const prose={fontFamily:ui,fontSize:mb?15:16,lineHeight:1.75,color:C.textMuted};
-    const wrap={maxWidth:1000,margin:"0 auto",
-      padding:EMBEDDED?(mb?"4px 16px 64px":"8px 24px 96px"):(mb?"28px 16px 64px":"48px 24px 96px")};
-
-    return h('div',{style:wrap},
+    return h('div',{className:"wrap",style:{paddingTop:EMBEDDED?(mb?4:8):0}},
 
       /* ---------------- THE LESSON ---------------- */
-      !EMBEDDED&&h('div',{style:{marginBottom:mb?32:44}},
-        h('div',{style:Object.assign({},eyebrow,{color:C.amber,marginBottom:12})},"The lesson"),
-        h('h1',{style:{fontFamily:display,fontSize:mb?32:44,fontWeight:700,lineHeight:1.12,marginBottom:18,color:C.text}},
-          "Materiality is a ",h('em',{style:{fontStyle:"italic",color:C.accent}},"judgment"),", and the memo is the deliverable"),
-        h('p',{style:Object.assign({},prose,{marginBottom:14})},
+      !EMBEDDED&&h('header',{className:"masthead"},
+        h('div',{className:"kicker"},"RootCaws · Risk lab"),
+        h('h1',null,
+          "Materiality is a ",h('em',null,"judgment"),", and the memo is the deliverable"),
+        h('p',{className:"deck"},
           "SEC Item 1.05 of Form 8-K gives you four business days to disclose a material cybersecurity incident. The clock does not start when you discover the incident — it starts when you ",
           h('strong',{style:{color:C.text}},"determine that it is material"),
           ", and that determination has to be made without unreasonable delay. Those are two different dates, and confusing them is the most common way this rule is misread."),
-        h('p',{style:Object.assign({},prose,{marginBottom:14})},
+        h('p',{className:"deck"},
           "There is no dollar threshold in the rule. Materiality still runs on the standard the Supreme Court set out in ",
           h('em',null,"TSC Industries"), " and ", h('em',null,"Basic"),
           ": would a reasonable investor consider it important, given the total mix of information? SAB No. 99 then makes the harder point — a quantitatively small number can still be material once qualitative factors are weighed. You cannot compute your way out of the judgment."),
-        h('p',{style:prose},
+        h('p',{className:"deck"},
           "So this tool does not return a score. It works both legs of the analysis, shows you which one is carrying the conclusion, and drafts the contemporaneous memo that is the thing you will actually be asked for later.")),
 
       /* ---------------- THE TOOL ---------------- */
-      h('div',{style:Object.assign({},eyebrow,{color:C.accent,marginBottom:16})},"The tool"),
-
       h('div',{style:Object.assign({},cardStyle(pd),{marginBottom:18})},
-        SLabel({label:"Step 1: The incident and the two dates"}),
+        h('div',{className:"panel-h"},"The incident and the two dates"),
         h('div',{style:{display:"grid",gridTemplateColumns:mb?"1fr":"1fr 1fr",gap:mb?0:18}},
           Field({label:"Registrant",value:company,onChange:setCompany,placeholder:"Acme Corp"}),
           Field({label:"Incident reference",value:incident,onChange:setIncident,placeholder:"INC-2026-0142"})),
@@ -561,7 +576,7 @@
         ):null),
 
       h('div',{style:Object.assign({},cardStyle(pd),{marginBottom:18})},
-        SLabel({label:"Step 2: Quantitative — the screen, not the answer"}),
+        h('div',{className:"panel-h"},"Quantitative: the screen, not the answer"),
         h('div',{style:{display:"grid",gridTemplateColumns:mb?"1fr":"1fr 1fr",gap:mb?0:18}},
           Field({label:"Annual pre-tax income",value:pretax,onChange:setPretax,placeholder:"120M",
             help:"Accepts shorthand: 500K, 1.2M, 3B."}),
@@ -600,7 +615,7 @@
           onSelect:setSelectedBm,nums,isMobile:mb})),
 
       h('div',{style:Object.assign({},cardStyle(pd),{marginBottom:18})},
-        SLabel({label:"Step 3: Qualitative — the total mix"}),
+        h('div',{className:"panel-h"},"Qualitative: the total mix"),
         h('p',{style:{fontFamily:ui,fontSize:13.5,lineHeight:1.65,color:C.textDim,marginBottom:18}},
           "Rate each factor on the facts you have. A single ",h('strong',{style:{color:C.accent}},"significant"),
           " rating is enough to carry materiality on its own, no matter how small the dollar figure is."),
@@ -663,7 +678,7 @@
       /* ---------------- MEMO ---------------- */
       h('div',{style:Object.assign({},cardStyle(pd),{marginBottom:32})},
         h('div',{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,flexWrap:"wrap",gap:10}},
-          h('div',{style:Object.assign({},eyebrow,{fontSize:12,color:C.accent})},"Step 4: The contemporaneous memo"),
+          h('div',{className:"panel-h",style:{marginBottom:0}},"The contemporaneous memo"),
           h('button',{onClick:copyMemo,className:"no-print",
             style:{fontFamily:ui,fontSize:12.5,fontWeight:600,cursor:"pointer",
               padding:"8px 16px",borderRadius:999,border:"1px solid "+C.accent,
@@ -675,18 +690,16 @@
             background:C.bg,border:"1px solid "+C.border,borderRadius:12,
             padding:mb?12:18,overflowX:"auto",whiteSpace:"pre-wrap",wordBreak:"break-word"}},memo)),
 
-      /* ---------------- THE TAKEAWAY ---------------- */
-      h('div',null,
-        h('div',{style:Object.assign({},eyebrow,{color:C.sage,marginBottom:12})},"The takeaway"),
-        h('p',{style:Object.assign({},prose,{marginBottom:14})},
-          "The output that matters here is not the verdict — it is the record. Enforcement in this area has turned far less on reaching the wrong conclusion than on being unable to show how the conclusion was reached, or on disclosure that described a hypothetical risk the company already knew had materialised."),
-        h('p',{style:Object.assign({},prose,{marginBottom:14})},
-          "Two habits follow from that. Write the memo at the time, not in reconstruction. And keep the quantitative and qualitative legs visibly separate, so a reviewer can see which one carried the call and test that leg specifically."),
-        h('p',{style:prose},
-          "Item 1.05 is also not the whole obligation. Item 106 of Regulation S-K covers the annual description of risk management, strategy, and governance, and a determination that an incident is not material today does not settle what happens when the facts develop.")),
+      /* ---------------- NOTES ---------------- */
+      h('section',{className:"notes"+(EMBEDDED?" embedded":""),"aria-label":"Notes"},
+        h('div',{className:"note"},h('h3',null,"The record is the output"),
+          h('p',null,"The output that matters here is not the verdict — it is the record. Enforcement in this area has turned far less on reaching the wrong conclusion than on being unable to show how the conclusion was reached, or on disclosure that described a hypothetical risk the company already knew had materialised.")),
+        h('div',{className:"note"},h('h3',null,"Two habits"),
+          h('p',null,"Write the memo at the time, not in reconstruction. And keep the quantitative and qualitative legs visibly separate, so a reviewer can see which one carried the call and test that leg specifically.")),
+        h('div',{className:"note"},h('h3',null,"Not the whole obligation"),
+          h('p',null,"Item 106 of Regulation S-K covers the annual description of risk management, strategy, and governance, and a determination that an incident is not material today does not settle what happens when the facts develop."))),
 
-      h('div',{style:{marginTop:36,paddingTop:20,borderTop:"1px solid "+C.border,
-          fontFamily:ui,fontSize:12,lineHeight:1.65,color:C.textDim}},
+      h('div',{className:"colophon"},
         h('strong',{style:{color:C.textMuted}},"This is an analysis aid, not legal advice."),
         " It does not create an attorney–client relationship and it is not a substitute for review by securities counsel. Thresholds are configurable because no threshold in this area is authoritative. Nothing you type leaves your browser — there is no server, no storage, and no telemetry."));
   }
