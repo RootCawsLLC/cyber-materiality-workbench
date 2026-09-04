@@ -6,7 +6,7 @@ actually be asked for later.
 
 **Live:** https://rootcawsllc.github.io/cyber-materiality-workbench/
 
-![Steps one and two of the workbench: the discovery and determination dates, then the quantitative screen showing an $11M expected loss and $28M reasonably likely downside against a $6.0M five-percent-of-pre-tax-income threshold, marked crossed at P50. Below it the benchmark cross-check, with a US financial-services data-breach shard selected and labelled "benchmark review candidate · module governed · 6 medium confidence", its published per-event range of $152,000 / $329,000 / $11,500,000, a note that the entered P50 sits between the central estimate and the ceiling while the P90 sits above it, a warning that this is corroboration for a class rather than evidence about the incident, and the six cited sources each with its own limitation](preview.png)
+![The workbench on the risk-lab shell. A full-width introduction under the lab kicker, then four panels with Fraunces headings: the incident and its two dates, the quantitative screen showing an $11M expected loss and $28M reasonably likely downside against the 5% pre-tax screen, the nine qualitative factors with their ratings, and the contemporaneous memo. Between them, a Material determination banner with the override controls; beneath, three closing notes in cards](preview.png)
 
 ## Why this exists
 
